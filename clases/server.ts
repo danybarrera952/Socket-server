@@ -37,11 +37,16 @@ import * as sockets from '../sockets/sockets';
 
        this.io.on('connection', cliente => {
 
-        console.log('nuevo cliente conectado');
+        
+        //conectar cliente
+        sockets.conectarCliente(cliente);
+        //usuario
+        sockets.usuario(cliente);
 
        // mensajes
 
        sockets.mensaje(cliente,this.io);
+
 
         //Desconectar
         sockets.desconectar(cliente);
