@@ -33,7 +33,7 @@ export class Usuariolista {
     //obtener lista de usuarios conectados
     public getLista() {
 
-        return this.Lista;
+        return this.Lista.filter(usuario => usuario.nombre !=='sin-nombre');
     }
 
     //obtener los usuarios por el id

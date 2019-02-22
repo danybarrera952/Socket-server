@@ -39,9 +39,9 @@ import * as sockets from '../sockets/sockets';
 
         
         //conectar cliente
-        sockets.conectarCliente(cliente);
+        sockets.conectarCliente(cliente,this.io);
         //usuario
-        sockets.usuario(cliente);
+        sockets.usuario(cliente,this.io);
 
        // mensajes
 
@@ -49,7 +49,7 @@ import * as sockets from '../sockets/sockets';
 
 
         //Desconectar
-        sockets.desconectar(cliente);
+        sockets.desconectar(cliente,this.io);
 
        });
         

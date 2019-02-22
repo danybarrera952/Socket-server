@@ -1,5 +1,7 @@
+import { UsuariosConectados } from './../sockets/sockets';
 import {Router, Request, Response} from 'express';
 import Server from '../clases/server';
+import { Socket } from 'socket.io';
 
 //constante para crear servicios REST
 const router = Router();
@@ -58,6 +60,43 @@ router.post('/mensajes/:id', (req:Request , res:Response) =>{
        
     });
 });
+
+//servicio para obetener todos los ids
+router.get('/usuarios', (req: Request, res: Response) => {
+    const server = Server.instance;
+    server.io.clients((err: any, clientes: string[]) =>{
+        
+        if(err) {
+
+            return res.json({
+                ok:false,
+                err
+            });
+        }
+
+        res.json({
+
+            ok:true,
+            clientes
+        });
+    });
+
+});
+
+//obtener id y nombre de los usuarios
+
+router.get('/usuarios/detalle', (req: Request, res: Response) => {
+
+    
+   
+
+        res.json({
+
+            ok:true,
+            clientes: UsuariosConectados.getLista()
+        });
+    });
+
 
 export default router;
 

@@ -1,7 +1,8 @@
+
 import { Usuariolista } from './../clases/usuario-lista';
 import { Socket } from 'socket.io';
 import socketIO from 'socket.io';
-import { emit } from 'cluster';
+
 import { Usuario } from '../clases/usuario';
 
 
@@ -9,24 +10,25 @@ import { Usuario } from '../clases/usuario';
 
 export const UsuariosConectados =  new Usuariolista();
 
-export const conectarCliente = (cliente: Socket) =>{
+export const conectarCliente = (cliente: Socket, io: socketIO.Server) =>{
 
     const usuario = new Usuario(cliente.id);
     UsuariosConectados.agregar(usuario);
 
-
+    io.emit('usuarios-activos',UsuariosConectados.getLista());
 
 
 };
 
-export const desconectar = (cliente:  Socket) => {
+export const desconectar = (cliente:  Socket, io:socketIO.Server) => {
 
     cliente.on('disconnect', () => {
+
 
         console.log('cliente Desconectado');
         
         UsuariosConectados.borrarUsuario(cliente.id);
-
+        io.emit('usuarios-activos',UsuariosConectados.getLista());
     });
 
 }
@@ -47,13 +49,14 @@ export const mensaje = (cliente: Socket, io: socketIO.Server) => {
 }
 //escuchar usuarios
 
-export const usuario = (cliente: Socket ) => {
+export const usuario = (cliente: Socket, io: socketIO.Server ) => {
 
     cliente.on('configurar-usuario', ( payload:{nombre:string} ) =>{
 
 
         UsuariosConectados.actualizarNombre(cliente.id , payload.nombre);
-        
+        io.emit('usuarios-activos',UsuariosConectados.getLista());
+
 
     });
 }
